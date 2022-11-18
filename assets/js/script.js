@@ -65,6 +65,7 @@ var removeIntro = function () {
   if (introEl) introEl.remove();
 };
 
+// Prints the selected question to the DOM
 var printQuestion = function (question) {
   var questionText = document.createElement("h2");
   questionText.textContent = question.question;
@@ -81,11 +82,13 @@ var printQuestion = function (question) {
   questionEl.style.display = "flex";
 };
 
+// Clears element of ID 'question'
 var clearQuestion = function () {
   questionEl.innerHTML = "";
   questionEl.style.pointerEvents = "all";
 };
 
+// Function that triggers after an answer is selected
 var submitAnswer = function (index) {
   var correctBtn = document.getElementById("btn-0");
   var selectedBtn = document.getElementById(`btn-${index}`);
@@ -109,6 +112,7 @@ var submitAnswer = function (index) {
   } else showResults();
 };
 
+// Clears everything and starts the quiz
 var startGame = function () {
   currentQuestion = pickQuestion();
   clearQuestion();
@@ -119,6 +123,7 @@ var startGame = function () {
   resetTimer();
 };
 
+// Finishes the quiz and shows the results
 var showResults = function () {
   var showScoreEl = document.createElement("h2");
   var initialsInput = document.createElement("input");
@@ -156,6 +161,7 @@ var showResults = function () {
   }
 };
 
+// Saves the score to the localStorage
 var saveScore = function (initials) {
   var getTotalScore = JSON.parse(localStorage.getItem("totalScore"));
   var newTotalScore = {};
@@ -174,8 +180,10 @@ var saveScore = function (initials) {
   localStorage.setItem("totalScore", JSON.stringify(newTotalScore));
 };
 
+// Listens to the Start Quiz button
 startBtnEl.addEventListener("click", () => startGame());
 
+// Questions pool
 var questions = [
   {
     question: "Inside which HTML element do we declare a Javascript file?",

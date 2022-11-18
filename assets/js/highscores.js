@@ -10,9 +10,11 @@ for (const key in getTotalScore) {
   }
 }
 
+// Clears the highscores by deleting the localStorage
 var clearHighscores = function () {
   localStorage.removeItem("totalScore");
   location.reload();
 };
 
+// Listens to the Clear HS button
 clearHSEl.addEventListener("click", () => clearHighscores());
