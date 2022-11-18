@@ -6,6 +6,7 @@ var score = 0;
 var pickedQuestions = [];
 
 var timerEl = document.getElementById("timer");
+var questionEl = document.getElementById("question");
 var startBtnEl = document.getElementById("startBtn");
 
 var timerCountdown;
@@ -59,8 +60,6 @@ var removeIntro = function () {
 };
 
 var printQuestion = function (question) {
-  var questionEl = document.getElementById("question");
-
   var questionText = document.createElement("h2");
   questionText.classList.add("title");
   questionText.textContent = question.question;
@@ -78,15 +77,11 @@ var printQuestion = function (question) {
 };
 
 var clearQuestion = function () {
-  var questionEl = document.getElementById("question");
-
   questionEl.innerHTML = "";
   questionEl.style.pointerEvents = "all";
 };
 
 var submitAnswer = function (index) {
-  var questionEl = document.getElementById("question");
-
   var correctBtn = document.getElementById("btn-0");
   var selectedBtn = document.getElementById(`btn-${index}`);
 
@@ -120,7 +115,6 @@ var startGame = function () {
 };
 
 var showResults = function () {
-  var questionEl = document.getElementById("question");
   var showScoreEl = document.createElement("h2");
   var startOverBtn = document.createElement("button");
   startBtnEl.textContent = "Start Over";
