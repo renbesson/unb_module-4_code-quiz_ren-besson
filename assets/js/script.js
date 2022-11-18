@@ -15,7 +15,7 @@ var resetEnv = function () {
   clearInterval(timerCountdown);
   timerCountdown = null;
   timer = 60;
-  score = 0;
+  // score = 0;
   currentQuestion = null;
   pickedQuestions = [];
   timerEl.style.color = "black";
@@ -32,6 +32,7 @@ var resetTimer = function () {
       // When time's up
       if (timer <= 0) {
         showResults();
+        clearInterval(timerCountdown);
         resetEnv();
       }
     }, 1000);
@@ -61,7 +62,6 @@ var removeIntro = function () {
 
 var printQuestion = function (question) {
   var questionText = document.createElement("h2");
-  questionText.classList.add("title");
   questionText.textContent = question.question;
 
   questionEl.appendChild(questionText);
@@ -87,7 +87,8 @@ var submitAnswer = function (index) {
 
   // If the answer is wrong
   if (index !== 0) {
-    timer -= 10;
+    //CHANGE BACK TO 10 BEFORE SUBMIT
+    timer -= 30;
     selectedBtn.style.animation = "wrong-blinking 1s infinite";
   } else {
     score++;
@@ -99,7 +100,6 @@ var submitAnswer = function (index) {
   if (pickedQuestions.length < 9 && timer > 0) {
     setTimeout(() => {
       clearQuestion();
-      console.log("shoudnt happen");
       printQuestion(questions[pickQuestion()]);
     }, 1500);
   } else showResults();
@@ -110,36 +110,65 @@ var startGame = function () {
   clearQuestion();
   removeIntro();
   printQuestion(questions[currentQuestion]);
+  score = 0;
   resetEnv();
   resetTimer();
 };
 
 var showResults = function () {
   var showScoreEl = document.createElement("h2");
+  var initialsInput = document.createElement("input");
+  var submitScoreBtn = document.createElement("button");
   var startOverBtn = document.createElement("button");
-  startBtnEl.textContent = "Start Over";
-  startOverBtn.addEventListener("click", () => startGame());
 
   clearQuestion();
 
-  showScoreEl.classList.add("title");
-  showScoreEl.textContent = `You got ${score} question(s) right!`;
+  // Title
+  showScoreEl.textContent = `You got ${score} question(s) right!\n Type your initials below to save it.`;
+
+  // Input initials
+  initialsInput.setAttribute("maxlength", 2);
+
+  // submit score button
+  submitScoreBtn.textContent = "Submit";
+  submitScoreBtn.addEventListener("click", () => {
+    initialsInput.remove();
+    submitScoreBtn.remove();
+    saveScore(initialsInput.value.toUpperCase());
+  });
+
+  // Start over button
+  startOverBtn.textContent = "Start Over";
+  startOverBtn.addEventListener("click", () => startGame());
+
   questionEl.appendChild(showScoreEl);
-  questionEl.appendChild(startBtnEl);
+  questionEl.appendChild(initialsInput);
+  questionEl.appendChild(submitScoreBtn);
+  questionEl.appendChild(startOverBtn);
 
   if (timer > 0) {
     clearInterval(timerCountdown);
     timerCountdown = null;
   }
-
-  saveScore();
 };
 
-var saveScore = function () {
-  var totalScore = localStorage.getItem("totalScore");
+var saveScore = function (initials) {
+  var getTotalScore = JSON.parse(localStorage.getItem("totalScore"));
+  var newTotalScore = {};
+
+  if (!getTotalScore) newTotalScore[initials] = score;
+  else {
+    if (getTotalScore[initials]) {
+      newTotalScore = getTotalScore;
+      newTotalScore[initials] = getTotalScore[initials] + score;
+    } else {
+      newTotalScore = getTotalScore;
+      newTotalScore[initials] = score;
+    }
+  }
 
   localStorage.setItem("lastScore", score);
-  localStorage.setItem("totalScore", Number(totalScore) + score);
+  localStorage.setItem("totalScore", JSON.stringify(newTotalScore));
 };
 
 startBtnEl.addEventListener("click", () => startGame());
