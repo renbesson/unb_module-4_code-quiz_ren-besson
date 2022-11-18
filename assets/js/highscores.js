@@ -1,4 +1,5 @@
 var highscoresEl = document.getElementById("highscores");
+var clearHSEl = document.getElementById("clearHS");
 var getTotalScore = JSON.parse(localStorage.getItem("totalScore"));
 
 for (const key in getTotalScore) {
@@ -8,3 +9,10 @@ for (const key in getTotalScore) {
     highscoresEl.appendChild(newEntryEl);
   }
 }
+
+var clearHighscores = function () {
+  localStorage.removeItem("totalScore");
+  location.reload();
+};
+
+clearHSEl.addEventListener("click", () => clearHighscores());

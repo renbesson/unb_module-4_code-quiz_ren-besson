@@ -1,16 +1,18 @@
+// Creates global variables
 var timer = 60;
 var currentQuestion = null;
 var score = 0;
+var timerCountdown;
 
 // Variable to keep track of which questions have been picked
 var pickedQuestions = [];
 
+// Gets global elements
 var timerEl = document.getElementById("timer");
 var questionEl = document.getElementById("question");
 var startBtnEl = document.getElementById("startBtn");
 
-var timerCountdown;
-
+// Resets the whole backend environment
 var resetEnv = function () {
   clearInterval(timerCountdown);
   timerCountdown = null;
@@ -21,6 +23,7 @@ var resetEnv = function () {
   timerEl.style.color = "black";
 };
 
+// Sets and resets the timer
 var resetTimer = function () {
   if (!timerCountdown) {
     timer = 60;
@@ -39,6 +42,7 @@ var resetTimer = function () {
   }
 };
 
+// Picks a random question that wasn't selected yet
 var pickQuestion = function () {
   var selected = null;
 
@@ -55,6 +59,7 @@ var pickQuestion = function () {
   }
 };
 
+// Removes the initial display from the DOM
 var removeIntro = function () {
   var introEl = document.getElementById("intro");
   if (introEl) introEl.remove();
@@ -87,8 +92,7 @@ var submitAnswer = function (index) {
 
   // If the answer is wrong
   if (index !== 0) {
-    //CHANGE BACK TO 10 BEFORE SUBMIT
-    timer -= 30;
+    timer -= 10;
     selectedBtn.style.animation = "wrong-blinking 1s infinite";
   } else {
     score++;
@@ -167,7 +171,6 @@ var saveScore = function (initials) {
     }
   }
 
-  localStorage.setItem("lastScore", score);
   localStorage.setItem("totalScore", JSON.stringify(newTotalScore));
 };
 
