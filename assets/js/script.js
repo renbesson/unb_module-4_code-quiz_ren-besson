@@ -72,13 +72,24 @@ var printQuestion = function (question) {
 
   questionEl.appendChild(questionText);
 
+  var answersEls = [];
   question.answers.forEach((el, index) => {
     var newButton = document.createElement("button");
     newButton.textContent = el;
     newButton.id = `btn-${index}`;
     newButton.addEventListener("click", () => submitAnswer(index));
-    questionEl.appendChild(newButton);
+    // questionEl.appendChild(newButton);
+    answersEls.push(newButton);
   });
+
+  // Shuffles the array
+  var shuffledAnswers = answersEls
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+  shuffledAnswers.forEach((el) => questionEl.appendChild(el));
+
   questionEl.style.display = "flex";
 };
 
@@ -220,7 +231,7 @@ var questions = [
   {
     question:
       "An <input> element with a type of “____” creates a box that can be set to Yes (checked) or No (unchecked).",
-    answers: ["checkbok", "radio", "button", "push"],
+    answers: ["checkbox", "radio", "button", "push"],
   },
   {
     question: "How do you write 'Hello World' in an alert box?",
